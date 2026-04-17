@@ -1,7 +1,12 @@
-import { Button, Card, TextInput } from "@mantine/core";
+import { Button, Card, Tabs, TextInput } from "@mantine/core";
 import Papa from "papaparse";
 import { useRef, useState } from "react";
+import { FlexColumnNoWrap, FlexRowNoWrap } from "../../components/flex";
+import { CbfCalculatorInstructions } from "./components/form-instructions";
+import { CbfCalculatorSalesTotalsByCategory } from "./components/sales-totals";
+import { CbfCalculatorSoldItemsTable } from "./components/sold-items-table";
 import {
+  SalesDataTabs,
   type CategoryDisplayData,
   type ItemResult,
   type TransactionResult,
@@ -10,13 +15,6 @@ import {
   groupItemsByCategory,
   transformCategoryNameAndItemsToCategoryDisplayData,
 } from "./utils";
-import { CbfSalesCategoryCard } from "./components/category-card";
-import { CbfCalculatorInstructions } from "./components/form-instructions";
-import {
-  FlexColumnNoWrap,
-  FlexRowNoWrap,
-  FlexRowWrap,
-} from "../../components/flex";
 
 const CbfSalesCalculator: React.FunctionComponent = () => {
   const transactionsInputRef = useRef<HTMLInputElement>(null);
@@ -26,6 +24,7 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
     useState<string>("");
   const [itemsFileValidationError, setItemsFileValidationError] =
     useState<string>("");
+
   const [calculatedCategories, setCalculatedCategories] = useState<
     CategoryDisplayData[]
   >([]);
@@ -91,8 +90,8 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
   };
 
   return (
-    <FlexColumnNoWrap style={{ alignItems: "flex-start", gap: "20px" }}>
-      <Card style={{ alignItems: "flex-start", alignSelf: "stretch" }}>
+    <FlexColumnNoWrap style={{ alignItems: "stretch", gap: "20px" }}>
+      <Card style={{ alignItems: "flex-start" }}>
         <FlexRowNoWrap style={{ gap: "50px" }}>
           <FlexColumnNoWrap>
             <TextInput
@@ -125,15 +124,24 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
           <CbfCalculatorInstructions />
         </FlexRowNoWrap>
       </Card>
-      <FlexRowWrap style={{ gap: "1%" }}>
-        {calculatedCategories.map((category) => (
-          <CbfSalesCategoryCard
-            key={category.name}
-            {...category}
-            style={{ width: "32.5%", marginBottom: "1%" }}
-          />
-        ))}
-      </FlexRowWrap>
+      {calculatedCategories.length ? (
+        <Tabs defaultValue={SalesDataTabs.salesData}>
+          <Tabs.List style={{ marginBottom: "20px" }}>
+            <Tabs.Tab value={SalesDataTabs.salesData}>Sales Data</Tabs.Tab>
+            <Tabs.Tab value={SalesDataTabs.soldItems}>Sold Items</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value={SalesDataTabs.salesData}>
+            <CbfCalculatorSalesTotalsByCategory
+              categoriesToDisplay={calculatedCategories}
+            />
+          </Tabs.Panel>
+          <Tabs.Panel value={SalesDataTabs.soldItems}>
+            <CbfCalculatorSoldItemsTable
+              categoriesToDisplay={calculatedCategories}
+            />
+          </Tabs.Panel>
+        </Tabs>
+      ) : null}
     </FlexColumnNoWrap>
   );
 };

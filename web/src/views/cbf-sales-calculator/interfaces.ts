@@ -40,3 +40,8 @@ export interface CategoryDisplayData {
   totalSales: number;
   squareFees: number;
 }
+
+export enum SalesDataTabs {
+  salesData = "0",
+  soldItems = "1",
+}
