@@ -77,12 +77,12 @@ const calculateItemSaleType = ({
 
 const calculateTotalsForCategoryItems = (
   accumulatedTotals: CategoryTotals,
-  curr
+  currentItem: ItemDisplayData
 ): CategoryTotals => {
   return {
-    cashSales: accumulatedTotals.cashSales + curr.cashAmount,
-    cardSales: accumulatedTotals.cardSales + curr.cardAmount,
-    squareFees: accumulatedTotals.squareFees + curr.fees,
+    cashSales: accumulatedTotals.cashSales + currentItem.cashAmount,
+    cardSales: accumulatedTotals.cardSales + currentItem.cardAmount,
+    squareFees: accumulatedTotals.squareFees + currentItem.fees,
   };
 };
 
