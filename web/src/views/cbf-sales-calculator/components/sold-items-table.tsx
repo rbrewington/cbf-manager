@@ -52,8 +52,9 @@ const CategoryTable: React.FunctionComponent<
         style={{
           margin: "0px",
           padding: "6px 12px",
-          backgroundColor: pink[3],
+          backgroundColor: pink[2],
           borderBottom: `1px solid ${pink[7]}`,
+          color: pink[9],
           display: "flex",
           flexFlow: "row nowrap",
           justifyContent: "space-between",
