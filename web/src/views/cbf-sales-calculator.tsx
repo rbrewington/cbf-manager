@@ -76,7 +76,7 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
               const transactionId = currentItem[transactionIdProperty];
               const transactionForItem = transactionsData.find(
                 (transaction) =>
-                  transaction[transactionIdProperty] === transactionId,
+                  transaction[transactionIdProperty] === transactionId
               );
 
               if (!transactionForItem) {
@@ -84,32 +84,32 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
               }
 
               const netTransactionAmount = transformCurrencyStringToFloat(
-                transactionForItem[netSalesProperty],
+                transactionForItem[netSalesProperty]
               );
               const netItemAmount = transformCurrencyStringToFloat(
-                currentItem[netSalesProperty],
+                currentItem[netSalesProperty]
               );
 
               const percentageOfTransaction =
                 netItemAmount / netTransactionAmount;
 
               const transactionFees = transformCurrencyStringToFloat(
-                transactionForItem.Fees,
+                transactionForItem.Fees
               );
               const feesForItem = transactionFees * percentageOfTransaction;
 
               const transactionAmountOnCard = transformCurrencyStringToFloat(
-                transactionForItem.Card,
+                transactionForItem.Card
               );
               const itemAmountOnCard = Math.round(
-                transactionAmountOnCard * percentageOfTransaction,
+                transactionAmountOnCard * percentageOfTransaction
               );
 
               const transactionAmountInCash = transformCurrencyStringToFloat(
-                transactionForItem.Cash,
+                transactionForItem.Cash
               );
               const itemAmountInCash = Math.round(
-                transactionAmountInCash * percentageOfTransaction,
+                transactionAmountInCash * percentageOfTransaction
               );
 
               const itemDetails: ItemDisplayData = {
@@ -122,8 +122,8 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
                   itemAmountInCash === 0
                     ? "card"
                     : itemAmountOnCard === 0
-                      ? "cash"
-                      : "split",
+                    ? "cash"
+                    : "split",
               };
 
               return {
@@ -133,7 +133,7 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
             }, {});
 
             const categories = Object.keys(
-              groupedByCategory,
+              groupedByCategory
             ).map<CategoryDisplayData>((categoryName) => {
               const items = groupedByCategory[categoryName];
               const { cashSales, cardSales, squareFees } = items.reduce(
@@ -144,7 +144,7 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
                     squareFees: acc.squareFees + curr.fees,
                   };
                 },
-                { cashSales: 0, cardSales: 0, squareFees: 0 },
+                { cashSales: 0, cardSales: 0, squareFees: 0 }
               );
               const totalSales = cashSales + cardSales;
               return {
@@ -154,7 +154,7 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
                 cardItems: items.filter((item) => item.saleType === "card"),
                 name: categoryName,
                 splitTenderItems: items.filter(
-                  (item) => item.saleType === "split",
+                  (item) => item.saleType === "split"
                 ),
                 totalSales,
                 squareFees,
@@ -181,22 +181,45 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
       }}
     >
       <Card style={{ alignItems: "flex-start" }}>
-        <TextInput
-          label="Transactions CSV"
-          multiple={false}
-          ref={transactionsInputRef}
-          type="file"
-          accept=".csv"
-        />
-        <TextInput
-          label="Items CSV"
-          multiple={false}
-          ref={itemsInputRef}
-          type="file"
-          accept=".csv"
-        />
+        <p style={{ margin: "0px" }}>
+          To get report:
+          <ul>
+            <li>Go to 'Payments and Invoices'</li>
+            <li>Click 'Transactions</li>
+            <li>In the top right, click 'Export'</li>
+            <li>
+              From the menu, click 'Generate' next to 'Transactions CSV' and
+              'Item Details CSV'
+            </li>
+          </ul>
+        </p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "nowrap",
+            gap: "20px",
+          }}
+        >
+          <TextInput
+            label="Transactions CSV"
+            multiple={false}
+            ref={transactionsInputRef}
+            type="file"
+            accept=".csv"
+            style={{ marginBottom: "10px" }}
+          />
+          <TextInput
+            label="Item Details CSV"
+            multiple={false}
+            ref={itemsInputRef}
+            type="file"
+            accept=".csv"
+            style={{ marginBottom: "10px" }}
+          />
+        </div>
         <Button
-          style={{ marginTop: "12px" }}
+          style={{ marginTop: "12px", alignSelf: "flex-end" }}
           onClick={() => handleFileUpload()}
         >
           Calculate Sales Totals
