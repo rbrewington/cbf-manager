@@ -27,7 +27,8 @@ const CbfCalculatorSalesTotalsByCategory: React.FunctionComponent<Props> = ({
           Sum of Category Fees: {formatCurrency(totalFees)}
         </h3>
         <h3 style={{ marginTop: "0px" }}>
-          Category Sales After Fees: {formatCurrency(totalSales + totalFees)}
+          Sum of Category Sales After Fees:{" "}
+          {formatCurrency(totalSales + totalFees)}
         </h3>
       </FlexRowNoWrap>
       <FlexRowWrap style={{ gap: "1%" }}>

@@ -41,7 +41,7 @@ export interface CategoryDisplayData {
   squareFees: number;
 }
 
-export enum SalesDataTabs {
-  salesData = "0",
-  soldItems = "1",
-}
+export const SalesDataTabs = {
+  salesData: "sales",
+  soldItems: "items",
+};

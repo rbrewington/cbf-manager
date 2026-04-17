@@ -1,6 +1,6 @@
 import { Button, Card, Collapse, Table, useMantineTheme } from "@mantine/core";
 import type { CategoryDisplayData, ItemDisplayData } from "../interfaces";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   categoriesToDisplay: CategoryDisplayData[];
@@ -8,32 +8,50 @@ interface Props {
 const CbfCalculatorSoldItemsTable: React.FunctionComponent<Props> = ({
   categoriesToDisplay,
 }) => {
+  const [isAllCollapsed, setIsAllCollapsed] = useState<boolean>(false);
   return (
-    <Card style={{ padding: "0px" }}>
-      {categoriesToDisplay.map((category) => (
-        <CategoryTable {...category} />
-      ))}
-    </Card>
+    <>
+      <Button
+        onClick={() => setIsAllCollapsed(true)}
+        style={{ marginBottom: "20px" }}
+      >
+        Collapse All
+      </Button>
+      <Card style={{ padding: "0px" }}>
+        {categoriesToDisplay.map((category) => (
+          <CategoryTable
+            key={category.name}
+            isAllCollapsed={isAllCollapsed}
+            onExpanded={() => setIsAllCollapsed(false)}
+            {...category}
+          />
+        ))}
+      </Card>
+    </>
   );
 };
 
-const CategoryTable: React.FunctionComponent<CategoryDisplayData> = ({
-  cardItems,
-  cashItems,
-  name,
-}) => {
+const CategoryTable: React.FunctionComponent<
+  CategoryDisplayData & { isAllCollapsed: boolean; onExpanded: () => void }
+> = ({ cardItems, cashItems, isAllCollapsed, name, onExpanded }) => {
   const {
     colors: { gray, pink },
   } = useMantineTheme();
 
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
+  useEffect(() => {
+    if (isAllCollapsed && isExpanded) {
+      setIsExpanded(false);
+    }
+  }, [isAllCollapsed]);
+
   return (
     <>
       <h2
         style={{
           margin: "0px",
-          padding: "6px",
+          padding: "6px 12px",
           backgroundColor: pink[3],
           borderBottom: `1px solid ${pink[7]}`,
           display: "flex",
@@ -43,7 +61,13 @@ const CategoryTable: React.FunctionComponent<CategoryDisplayData> = ({
         }}
       >
         {name}
-        <Button onClick={() => setIsExpanded((current) => !current)} size="xs">
+        <Button
+          onClick={() => {
+            setIsExpanded((current) => !current);
+            onExpanded();
+          }}
+          size="xs"
+        >
           Toggle Collapse
         </Button>
       </h2>
@@ -98,8 +122,8 @@ const ItemsTable: React.FunctionComponent<ItemsTableProps> = ({ items }) => {
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {items.map((item) => (
-          <Table.Tr>
+        {items.map((item, index) => (
+          <Table.Tr key={`${item.sku}-${index}`}>
             <Table.Td>{item.sku}</Table.Td>
             <Table.Td>{item.description}</Table.Td>
           </Table.Tr>
