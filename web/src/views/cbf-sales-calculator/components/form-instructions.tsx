@@ -1,6 +1,6 @@
 const CbfCalculatorInstructions: React.FunctionComponent = () => {
   return (
-    <>
+    <div>
       <p style={{ margin: "0px" }}>To get reports:</p>
       <ul>
         <li>Go to 'Payments and Invoices'</li>
@@ -11,7 +11,7 @@ const CbfCalculatorInstructions: React.FunctionComponent = () => {
           Detail CSV'
         </li>
       </ul>
-    </>
+    </div>
   );
 };
 
