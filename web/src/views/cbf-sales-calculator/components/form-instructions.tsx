@@ -1,7 +1,7 @@
 const CbfCalculatorInstructions: React.FunctionComponent = () => {
   return (
     <p style={{ margin: "0px" }}>
-      To get report:
+      To get reports:
       <ul>
         <li>Go to 'Payments and Invoices'</li>
         <li>Click 'Transactions</li>

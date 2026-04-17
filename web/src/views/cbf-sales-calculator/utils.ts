@@ -8,6 +8,11 @@ import {
   type CategoryTotals,
 } from "./interfaces";
 
+const formatCurrency = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+}).format;
+
 const calculateItemPercentOfTransaction = ({
   item,
   transaction,
@@ -177,6 +182,7 @@ const transformCategoryNameAndItemsToCategoryDisplayData =
   };
 
 export {
+  formatCurrency,
   groupItemsByCategory,
   transformCategoryNameAndItemsToCategoryDisplayData,
 };

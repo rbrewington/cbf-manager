@@ -12,6 +12,11 @@ import {
 } from "./utils";
 import { CbfSalesCategoryCard } from "./components/category-card";
 import { CbfCalculatorInstructions } from "./components/form-instructions";
+import {
+  FlexColumnNoWrap,
+  FlexRowNoWrap,
+  FlexRowWrap,
+} from "../../components/flex";
 
 const CbfSalesCalculator: React.FunctionComponent = () => {
   const transactionsInputRef = useRef<HTMLInputElement>(null);
@@ -86,59 +91,50 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        flexWrap: "nowrap",
-        alignItems: "flex-start",
-        gap: "20px",
-      }}
-    >
-      <Card style={{ alignItems: "flex-start" }}>
-        <CbfCalculatorInstructions />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "nowrap",
-            gap: "20px",
-          }}
-        >
-          <TextInput
-            label="Transactions CSV"
-            multiple={false}
-            ref={transactionsInputRef}
-            type="file"
-            accept=".csv"
-            style={{ marginBottom: "10px" }}
-            error={transactionsFileValidationError}
-            onChange={() => setTransactionsFileValidationError("")}
-          />
-          <TextInput
-            label="Items Detail CSV"
-            multiple={false}
-            ref={itemsInputRef}
-            type="file"
-            accept=".csv"
-            style={{ marginBottom: "10px" }}
-            error={itemsFileValidationError}
-            onChange={() => setItemsFileValidationError("")}
-          />
-        </div>
-        <Button
-          style={{ marginTop: "12px", alignSelf: "flex-end" }}
-          onClick={() => handleFileUpload()}
-        >
-          Calculate Sales Totals
-        </Button>
+    <FlexColumnNoWrap style={{ alignItems: "flex-start", gap: "20px" }}>
+      <Card style={{ alignItems: "flex-start", alignSelf: "stretch" }}>
+        <FlexRowNoWrap style={{ gap: "50px" }}>
+          <FlexColumnNoWrap>
+            <TextInput
+              label="Transactions CSV"
+              multiple={false}
+              ref={transactionsInputRef}
+              type="file"
+              accept=".csv"
+              style={{ marginBottom: "10px" }}
+              error={transactionsFileValidationError}
+              onChange={() => setTransactionsFileValidationError("")}
+            />
+            <TextInput
+              label="Items Detail CSV"
+              multiple={false}
+              ref={itemsInputRef}
+              type="file"
+              accept=".csv"
+              style={{ marginBottom: "10px" }}
+              error={itemsFileValidationError}
+              onChange={() => setItemsFileValidationError("")}
+            />
+            <Button
+              style={{ marginTop: "12px", alignSelf: "flex-start" }}
+              onClick={() => handleFileUpload()}
+            >
+              Calculate Sales Totals
+            </Button>
+          </FlexColumnNoWrap>
+          <CbfCalculatorInstructions />
+        </FlexRowNoWrap>
       </Card>
-      <div style={{ display: "flex", flexFlow: "row wrap", gap: "10px" }}>
+      <FlexRowWrap style={{ gap: "1%" }}>
         {calculatedCategories.map((category) => (
-          <CbfSalesCategoryCard key={category.name} {...category} />
+          <CbfSalesCategoryCard
+            key={category.name}
+            {...category}
+            style={{ width: "32.5%", marginBottom: "1%" }}
+          />
         ))}
-      </div>
-    </div>
+      </FlexRowWrap>
+    </FlexColumnNoWrap>
   );
 };
 
