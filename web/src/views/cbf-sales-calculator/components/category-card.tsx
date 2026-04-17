@@ -1,7 +1,8 @@
-import { Card } from "@mantine/core";
-import type { CategoryDisplayData } from "../interfaces";
-import { FlexRowNoWrap } from "../../../components/flex";
+import { Card, Checkbox } from "@mantine/core";
+import { useState } from "react";
+import { FlexColumnNoWrap, FlexRowNoWrap } from "../../../components/flex";
 import { BoldText } from "../../../components/text-styles";
+import type { CategoryDisplayData } from "../interfaces";
 import { formatCurrency } from "../utils";
 
 const CbfSalesCategoryCard: React.FunctionComponent<
@@ -18,14 +19,38 @@ const CbfSalesCategoryCard: React.FunctionComponent<
   totalAfterFees,
   style,
 }) => {
-  // TODO: add toggle for community donation
   // TODO: list item names
   // add tab for sold items by category
   // add print button for categories
   // TODO: Display actual total and calculated total
+  const [isDonationApplied, setIsDonationApplied] = useState<boolean>(false);
+
+  const donationAmount = 0 - totalAfterFees * 0.1;
+  const finalTotal = isDonationApplied
+    ? totalAfterFees + donationAmount
+    : totalAfterFees;
+
   return (
     <Card style={style}>
-      <h3 style={{ margin: "0px 0px 10px" }}>{name}</h3>
+      <FlexRowNoWrap
+        style={{
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: "10px",
+        }}
+      >
+        <h3 style={{ margin: "0px" }}>{name}</h3>
+        <Checkbox
+          color="pink"
+          checked={isDonationApplied}
+          onChange={(event) => {
+            setIsDonationApplied(event.target.checked);
+          }}
+          style={{ cursor: "pointer" }}
+          label="Comm Donation"
+          labelPosition="left"
+        />
+      </FlexRowNoWrap>
       <FlexRowNoWrap style={{ gap: "10px", marginBottom: "12px" }}>
         <PaymentTypeSummary
           style={{ flexGrow: 1 }}
@@ -45,20 +70,39 @@ const CbfSalesCategoryCard: React.FunctionComponent<
         label="Split Tender Items"
         value={splitTenderItems.length}
       />
-      <ValueWithLabel label="Total Sales" value={formatCurrency(totalSales)} />
-      <ValueWithLabel
-        style={{
-          borderBottom: `2px solid pink`,
-          marginBottom: "5px",
-          paddingBottom: "5px",
-        }}
-        label="Square Fees"
-        value={formatCurrency(squareFees)}
-      />
-      <ValueWithLabel
-        label="Final Total"
-        value={formatCurrency(totalAfterFees)}
-      />
+      <FlexColumnNoWrap style={{ flexGrow: 1, justifyContent: "flex-end" }}>
+        <ValueWithLabel
+          label="Total Sales"
+          value={formatCurrency(totalSales)}
+        />
+        <ValueWithLabel
+          label="Square Fees"
+          value={formatCurrency(squareFees)}
+        />
+        {isDonationApplied ? (
+          <>
+            <ValueWithLabel
+              label="Total After Fees"
+              value={formatCurrency(totalAfterFees)}
+            />
+            <ValueWithLabel
+              label="Comm Donation"
+              value={formatCurrency(donationAmount)}
+            />
+          </>
+        ) : null}
+        <div
+          style={{
+            height: "6px",
+            marginBottom: "5px",
+            borderBottom: `2px solid pink`,
+          }}
+        />
+        <ValueWithLabel
+          label="Final Total"
+          value={formatCurrency(finalTotal)}
+        />
+      </FlexColumnNoWrap>
     </Card>
   );
 };
