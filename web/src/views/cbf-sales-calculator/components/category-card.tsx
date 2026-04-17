@@ -19,10 +19,6 @@ const CbfSalesCategoryCard: React.FunctionComponent<
   totalAfterFees,
   style,
 }) => {
-  // TODO: list item names
-  // add tab for sold items by category
-  // add print button for categories
-  // TODO: Display actual total and calculated total
   const [isDonationApplied, setIsDonationApplied] = useState<boolean>(false);
 
   const donationAmount = 0 - totalAfterFees * 0.1;

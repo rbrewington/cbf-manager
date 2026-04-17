@@ -185,4 +185,5 @@ export {
   formatCurrency,
   groupItemsByCategory,
   transformCategoryNameAndItemsToCategoryDisplayData,
+  transformCurrencyStringToFloat,
 };
