@@ -15,6 +15,7 @@ import {
   groupItemsByCategory,
   transformCategoryNameAndItemsToCategoryDisplayData,
 } from "./utils";
+import { TestApi } from "./components/test-api";
 
 const CbfSalesCalculator: React.FunctionComponent = () => {
   const transactionsInputRef = useRef<HTMLInputElement>(null);
@@ -51,7 +52,7 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
 
         if (!transactionsData[0].Fees) {
           setTransactionsFileValidationError(
-            "Invalid columns. Did you upload the correct file?"
+            "Invalid columns. Did you upload the correct file?",
           );
           return;
         }
@@ -64,22 +65,22 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
 
             if (!itemsData[0].SKU) {
               setItemsFileValidationError(
-                "Invalid columns. Did you upload the correct file?"
+                "Invalid columns. Did you upload the correct file?",
               );
               return;
             }
 
             const itemsByCategory = itemsData.reduce(
               groupItemsByCategory(transactionsData),
-              {}
+              {},
             );
 
             const categoriesToDisplay = Object.keys(
-              itemsByCategory
+              itemsByCategory,
             ).map<CategoryDisplayData>(
               transformCategoryNameAndItemsToCategoryDisplayData(
-                itemsByCategory
-              )
+                itemsByCategory,
+              ),
             );
 
             setCalculatedCategories(categoriesToDisplay);
@@ -124,6 +125,7 @@ const CbfSalesCalculator: React.FunctionComponent = () => {
           <CbfCalculatorInstructions />
         </FlexRowNoWrap>
       </Card>
+      <TestApi />
       {calculatedCategories.length ? (
         <Tabs defaultValue={SalesDataTabs.salesData}>
           <Tabs.List style={{ marginBottom: "20px" }}>

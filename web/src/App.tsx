@@ -2,6 +2,7 @@ import { MantineProvider, createTheme, useMantineTheme } from "@mantine/core";
 import { CbfSalesCalculator } from "./views/cbf-sales-calculator";
 
 import "@mantine/core/styles.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const eglTheme = createTheme({
   colors: {
@@ -22,10 +23,15 @@ const eglTheme = createTheme({
 });
 
 const App: React.FunctionComponent = () => {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
   return (
-    <MantineProvider theme={eglTheme}>
-      <AppContent />
-    </MantineProvider>
+    <QueryClientProvider client={queryClient}>
+      <MantineProvider theme={eglTheme}>
+        <AppContent />
+      </MantineProvider>
+    </QueryClientProvider>
   );
 };
 
